@@ -1,6 +1,6 @@
 <?php
 
-$topic = $_GET ["topic"];
+$topic = isset($_GET["topic"]) ? $_GET["topic"] : "todas";
 
 $bmw = (object) [
 	'name' => 'BMW',
@@ -44,16 +44,13 @@ $jeep = (object) [
 ];
 
 if ($topic == "grandes marcas"){
-	$marcas = [$bmw, $mercedes, $audi, $alfaromeo, $jeep];
+    $marcas = [$bmw, $mercedes, $audi, $alfaromeo, $jeep];
 } else if ($topic == "gama media") {
-	$marcas = [$volkswagen, $peugeot, $honda]; 
+    $marcas = [$volkswagen, $peugeot, $honda]; 
+} else {
+    $marcas = [$bmw, $mercedes, $audi, $volkswagen, $peugeot, $honda, $alfaromeo, $jeep];
 }
 
-$marcas = [$bmw, $mercedes, $audi, $volkswagen, $peugeot, $honda, $alfaromeo, $jeep];
-
-$cards = count(value: $marcas);
-
-$cssEstilos = "estilos";
 $tituloppal =  "Consecionaria R|R";
 $descriptitulo = "Donde compran los fanaticos por los autos";
 ?>
@@ -103,11 +100,11 @@ $descriptitulo = "Donde compran los fanaticos por los autos";
 	
 </head>
 <body class="ppal">
-<h1 class="tituloppal"> <?= $tituloppal; ?> </h1>
+<h1 class="tituloppal"> <?= $tituloppal ?>: <?= $topic ?> </h1>
 <h2 class="descripcionpag"> <?= $descriptitulo;?> </h2>
 <div class="container">
 <div class="row">
-<?php for($i = 0; $i < $cards; $i++) { ?>
+<?php for($i = 0; $i < count($marcas); $i++) { ?>
 <div class="card" style="width: 20rem;">
   <img src="<?= $marcas[$i] -> url ?>" class="card-img-top" alt="...">
   <div class="card-body">

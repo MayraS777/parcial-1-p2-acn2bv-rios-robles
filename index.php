@@ -1,10 +1,10 @@
 <?php
 require_once("./utils/data.php");
 require_once("./components/styleSetup.php");
-require_once("./views/indexViews.php");
 
 $topic = $_GET["topic"] ?? "";
 $nombre = $_GET["nombre"] ?? "";
+
 
 if ($topic == "alta gama") {
     $marcas = [$bmw, $mercedes, $audi, $alfaromeo, $jeep];
@@ -12,6 +12,12 @@ if ($topic == "alta gama") {
     $marcas = [$volkswagen, $peugeot, $honda];
 } else {
     $marcas = [$bmw, $mercedes, $audi, $volkswagen, $peugeot, $honda, $alfaromeo, $jeep];
+}
+
+if ($nombre !== "") {
+    $marcas = array_filter($marcas, function ($m) use ($nombre) {
+        return stripos($m->name, $nombre) !== false;
+    });
 }
 
 $tituloppal = "Consecionaria R|R";
@@ -37,7 +43,7 @@ $descriptitulo = "Donde compran los fanaticos por los autos";
 
 <div class="container mb-4">
 	<form method="GET" class="d-flex justify-content-center gap-2">
-		<input type="opcion" name="nombre" value="<?= htmlspecialchars($nombre) ?>">
+		<input type="text" name="nombre" placeholder="Buscar Marca..." value="<?= htmlspecialchars($nombre) ?>">
 		<select name="topic">
 			<option value="">Todas las categorías</option>
 			<option value="alta gama" <?= $topic == "alta gama" ? "selected" : "" ?>>Alta Gama</option>
@@ -47,12 +53,11 @@ $descriptitulo = "Donde compran los fanaticos por los autos";
 	</form>
 </div>
 
-<!-- BOTON PARA CAMBIAR TEMA -->
 <div class="text-center mb-4">
 	<form method="GET">
 		<input type="hidden" name="tema" value="<?= $tema === 'oscuro' ? 'claro' : 'oscuro' ?>">
 		<button type="submit" class="btn btn-primary">
-			Cambiar a modo <?= $tema === 'oscuro' ? 'claro' : 'oscuro' ?>
+			Modo <?= $tema === 'oscuro' ? 'claro' : 'oscuro' ?>
 		</button>
 	</form>
 </div>
@@ -68,14 +73,14 @@ $descriptitulo = "Donde compran los fanaticos por los autos";
 			<div class="card-body">
 				<h5 class="card-title"><?= $marcas[$i]->name ?></h5>
 				<h6 class="categoria"><?= $marcas[$i]->categoria ?></h6>
-				<p class="card-text">Vehículo disponible en nuestra concesionaria oficial.</p>
+				<p class="card-text">Vehículos disponible en nuestra concesionaria oficial.</p>
 				<a href="<?= $marcas[$i]->link ?>" class="btn btn-primary">Ver Modelos</a>
 			</div>
 		</div>
 	<?php } ?>
 	</div>
 </div>
-
+<?= $mensaje ?>
 <?php require_once("./views/indexViews.php"); ?>
 
 </body>
